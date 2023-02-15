@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -101,6 +101,16 @@
     pre:empty {
       display: none;
     }
+    nav {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    nav * {
+      display: inline-block;
+    }
+    nav a {
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
@@ -117,6 +127,21 @@
         <blockquote>
           <i>inspired by <a href="https://linuxhandbook.com/chmod-calculator/">this site</a> and <a href="https://newcss.net/">this site</a>.</i>
         </blockquote>
+        <nav>
+          <div><a href="https://github.com/ppz-pro/chmod-calc">Github</a></div>
+          <span>&nbsp;|&nbsp;</span>
+          <div>
+            ${zh
+              ? '<span>中文</span>'
+              : '<a href="javascript:render(true)">中文</a>'
+            }
+            <span>/</span>
+            ${zh
+              ? '<a href="javascript:render()">English</a>'
+              : '<span>English</span>'
+            }
+          </div>
+        </nav>
         <main>
           <table>
             <thead>
@@ -156,7 +181,7 @@
     const lang = navigator.language || navigator.userLanguage
     render(lang.slice(0, 2) == 'zh')
     // 计算
-    el('tbody').onchange = function calculate() {
+    el('body').onchange = function calculate() {
       const val = selector => Number(el(selector).checked)
       const user = {
         r: val('tbody tr td input'),
