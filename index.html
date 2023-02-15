@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
   <meta charset="UTF-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -15,7 +15,7 @@
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --txt: #eeeeee;
+        --txt: #bbb;
         --bg: #000000;
         --bg2: #111111;
         --bg3: #222222;
@@ -23,11 +23,15 @@
         --link2: #0366D6; */
       }
     }
-
     * {
       padding: 0;
       margin: 0;
       box-sizing: border-box;
+    }
+
+    html {
+      color: var(--txt);
+      background-color: var(--bg);
     }
     body {
       max-width: 750px;
@@ -44,6 +48,12 @@
       padding-right: calc(50vw - 50%);
       font-size: 2rem;
       line-height: 3;
+    }
+    @media (max-width: 750px) {
+      h1 {
+        font-size: 1rem;
+        text-align: center;
+      }
     }
     blockquote {
       padding: 1.5rem;
@@ -70,15 +80,12 @@
     td label input[type="checkbox"] {
       margin-left: .5em;
     }
-
-    
     a {
       color: var(--link);
     }
     a:hover {
       color: var(--link2);
     }
-
     pre {
       padding: .6rem 1.4rem;
       max-width: 100%;
@@ -91,13 +98,6 @@
     pre:empty {
       display: none;
     }
-
-    @media (max-width: 750px) {
-      h1 {
-        font-size: 1rem;
-        text-align: center;
-      }
-    }
   </style>
 </head>
 <body>
@@ -107,28 +107,29 @@
     // 元素选择器
     const el = selector => document.querySelector(selector)
     // 渲染页面
-    function render(lang) {
+    function render(zh) {
+      const lang = zh?'zh':'en'
       el('#root').innerHTML = `
         <header>
-          <h1>${{ cn: 'Chmod 计算器', en: 'Chmod Calculator' }[lang]}</h1>
+          <h1>${{ zh: 'Chmod 计算器', en: 'Chmod Calculator' }[lang]}</h1>
         </header>
         <blockquote>
-          <i>inspired by <a href="https://linuxhandbook.com/chmod-calculator/">this site</a>.</i>
+          <i>inspired by <a href="https://linuxhandbook.com/chmod-calculator/">this site</a> and <a href="https://newcss.net/">this site</a>.</i>
         </blockquote>
         
         <main>
           <table>
             <thead>
               <tr>
-                <th>${{ cn: '用户', en: 'User' }[lang]}</th>
-                <th>${{ cn: '用户组', en: 'Group' }[lang]}</th>
-                <th>${{ cn: '其他', en: 'Other' }[lang]}</th>
+                <th>${{ zh: '用户', en: 'User' }[lang]}</th>
+                <th>${{ zh: '用户组', en: 'Group' }[lang]}</th>
+                <th>${{ zh: '其他', en: 'Other' }[lang]}</th>
               </tr>
             </thead>
             <tbody>${function() {
-              const read = { cn: '读', en: 'Read' }
-              const write = { cn: '写', en: 'Write' }
-              const exec = { cn: '执行', en: 'Execute' }
+              const read = { zh: '读', en: 'Read' }
+              const write = { zh: '写', en: 'Write' }
+              const exec = { zh: '执行', en: 'Execute' }
               return [
                 [read, read, read],
                 [write, write, write],
@@ -152,7 +153,10 @@
         </main>
       `
     }
-    render('cn')
+
+    // 渲染默认语言
+    const lang = navigator.language || navigator.userLanguage
+    render(lang.slice(0, 2) == 'zh')
 
     // 计算
     el('tbody').onchange = function calculate() {
