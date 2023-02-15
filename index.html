@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>chmod calculator</title>
+  <style>
+    :root {
+      --txt: #1A1A1A;
+      --bg: #FFFFFF;
+      --bg2: #F6F8FA;
+      --bg3: #E5E7EB;
+      --link: #0070F3;
+      --link2: #0366D6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --txt: #eeeeee;
+        --bg: #000000;
+        --bg2: #111111;
+        --bg3: #222222;
+        /* --link: #0070F3;
+        --link2: #0366D6; */
+      }
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.5;
+    }
+    h1 {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--bg3);
+      padding: 0 1.5rem;
+      margin: -2rem calc(0px - (50vw - 50%)) 1rem;
+      padding-left: calc(50vw - 50%);
+      padding-right: calc(50vw - 50%);
+      font-size: 2rem;
+      line-height: 3;
+    }
+    blockquote {
+      padding: 1.5rem;
+      background: var(--bg2);
+      border-left: 5px solid var(--bg3);
+      margin-bottom: 1rem;
+    }
+    table {
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin-bottom: 1rem;
+    }
+    th, td {
+      border: 1px solid var(--bg3);
+      line-height: 3;
+    }
+    td label {
+      display: block;
+      user-select: none;
+      cursor: pointer;
+    }
+    td label input[type="checkbox"] {
+      margin-left: .5em;
+    }
+
+    
+    a {
+      color: var(--link);
+    }
+    a:hover {
+      color: var(--link2);
+    }
+
+    pre {
+      padding: .6rem 1.4rem;
+      max-width: 100%;
+      overflow: auto;
+      background: var(--bg2);
+      border: 1px solid var(--bg3);
+      border-radius: .25rem;
+      font-size: .9rem;
+    }
+    pre:empty {
+      display: none;
+    }
+
+    @media (max-width: 750px) {
+      h1 {
+        font-size: 1rem;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    // 元素选择器
+    const el = selector => document.querySelector(selector)
+    // 渲染页面
+    function render(lang) {
+      el('#root').innerHTML = `
+        <header>
+          <h1>${{ cn: 'Chmod 计算器', en: 'Chmod Calculator' }[lang]}</h1>
+        </header>
+        <blockquote>
+          <i>inspired by <a href="https://linuxhandbook.com/chmod-calculator/">this site</a>.</i>
+        </blockquote>
+        
+        <main>
+          <table>
+            <thead>
+              <tr>
+                <th>${{ cn: '用户', en: 'User' }[lang]}</th>
+                <th>${{ cn: '用户组', en: 'Group' }[lang]}</th>
+                <th>${{ cn: '其他', en: 'Other' }[lang]}</th>
+              </tr>
+            </thead>
+            <tbody>${function() {
+              const read = { cn: '读', en: 'Read' }
+              const write = { cn: '写', en: 'Write' }
+              const exec = { cn: '执行', en: 'Execute' }
+              return [
+                [read, read, read],
+                [write, write, write],
+                [exec, exec, exec]
+              ].map((row, x) => `
+                <tr>${
+                  row.map((item, y) => `
+                    <td>
+                      <label>
+                        <span>${item[lang]}</span>
+                        <input type="checkbox">
+                      </label>
+                    </td>
+                  `).join('')
+                }</tr>
+              `).join('')
+            }()}</tbody>
+          </table>
+
+          <pre></pre>
+        </main>
+      `
+    }
+    render('cn')
+
+    // 计算
+    el('tbody').onchange = function calculate() {
+      const val = selector => Number(el(selector).checked)
+      const user = {
+        r: val('tbody tr td input'),
+        w: val('tbody tr + tr td input'),
+        e: val('tbody tr + tr + tr td input'),
+      }
+      const group = {
+        r: val('tbody tr td + td input'),
+        w: val('tbody tr + tr td + td input'),
+        e: val('tbody tr + tr + tr td + td input'),
+      }
+      const other = {
+        r: val('tbody tr td + td + td input'),
+        w: val('tbody tr + tr td + td + td input'),
+        e: val('tbody tr + tr + tr td + td + td input'),
+      }
+      const roleValNum = role => role.r * 4 + role.w * 2 + role.e
+      const roleValSem = role => (role.r?'r':'-') + (role.w?'w':'-') + (role.e?'x':'-')
+      el('pre').innerHTML =
+`chmod ${roleValNum(user)}${roleValNum(group)}${roleValNum(other)} [filename]
+chmod ${roleValSem(user)}${roleValSem(group)}${roleValSem(other)} [filename]`
+    }
+  </script>
+</body>
+</html>
