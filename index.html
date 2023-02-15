@@ -72,6 +72,9 @@
       border: 1px solid var(--bg3);
       line-height: 3;
     }
+    th {
+      background: var(--bg2);
+    }
     td label {
       display: block;
       user-select: none;
@@ -110,13 +113,10 @@
     function render(zh) {
       const lang = zh?'zh':'en'
       el('#root').innerHTML = `
-        <header>
-          <h1>${{ zh: 'Chmod 计算器', en: 'Chmod Calculator' }[lang]}</h1>
-        </header>
+        <h1>${{ zh: 'Chmod 计算器', en: 'Chmod Calculator' }[lang]}</h1>
         <blockquote>
           <i>inspired by <a href="https://linuxhandbook.com/chmod-calculator/">this site</a> and <a href="https://newcss.net/">this site</a>.</i>
         </blockquote>
-        
         <main>
           <table>
             <thead>
@@ -148,16 +148,13 @@
               `).join('')
             }()}</tbody>
           </table>
-
           <pre></pre>
         </main>
       `
     }
-
     // 渲染默认语言
     const lang = navigator.language || navigator.userLanguage
     render(lang.slice(0, 2) == 'zh')
-
     // 计算
     el('tbody').onchange = function calculate() {
       const val = selector => Number(el(selector).checked)
