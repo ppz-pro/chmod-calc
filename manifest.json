@@ -1,10 +1,10 @@
 {
   "name": "Chmod 计算器",
   "lang": "zh-CN",
-  "start_url": "/",
+  "start_url": "/chmod-calc/",
   "display": "standalone",
   "icons": [{
-    "src": "./icon160.svg",
-    "sizes": "160*160"
+    "src": "icon.svg",
+    "sizes": "192x192"
   }]
 }
