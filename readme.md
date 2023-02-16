@@ -8,7 +8,7 @@
 + ✅ 支持电脑和移动端
 + ✅ 自动切换亮/暗模式（跟随系统）
 + ✅ 中英文切换（用户没设置时，优先使用浏览器默认语言）
-+ 可安装为 PWA
++ ✅ 可安装为 PWA（[微软 PWA 教程](https://learn.microsoft.com/en-us/microsoft-edge/progressive-web-apps-chromium/how-to/) | [简介 PWA（中文）](https://zhuanlan.zhihu.com/p/589899361)）
 
 ## 意义
 无
