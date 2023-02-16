@@ -205,6 +205,12 @@
 `chmod ${roleValNum(user)}${roleValNum(group)}${roleValNum(other)} [filename]
 chmod ${roleValSem(user)}${roleValSem(group)}${roleValSem(other)} [filename]`
     }
+
+    // 注册一个啥也不干的服务
+    if('serviceWorker' in navigator)
+      navigator.serviceWorker.register('./sw.js', { scope: '/' })
+    else
+      console.log('不能注册服务')
   </script>
 </body>
 </html>
