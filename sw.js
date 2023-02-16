@@ -1,1 +1,1 @@
-console.log('我啥也不干')
+self.addEventListener('fetch', event => {})
